@@ -1,0 +1,86 @@
+<content>
+    <h1>{{title}}</h1>
+    <h3>{{description}}</h3>
+    <hr>
+    <form [formGroup]="form" (ngSubmit)="submitAnswer()">
+
+
+        <div>
+            <p>1. {{questions.input}}</p>
+            <input type="text" formControlName="name">
+        </div>
+        <div>
+            <p>2. {{questions.checkbox}}</p>
+            <ng-container *ngFor="let skill of skillSetCheck;let ind = index">
+                <input type="checkbox" [value]="skill.id" formControlName="pskill" (change)="chckChange($event)">
+                <!-- <input type="checkbox" [value]="skill.id" formControlName="pskill"> -->
+                <label for="">{{skill.name}}</label><br>
+
+            </ng-container>
+        </div>
+        <div>
+            <p>3. {{questions.dropdown}}</p>
+            <ng-container>
+                <select name="" id="" formControlName="prefferedLang">
+                    <option *ngFor="let skill of skillSetLang" [value]="skill.id">{{skill.name}}</option>
+                </select>
+            </ng-container>
+        </div>
+        <div>
+            <p>4. {{questions.radio}}</p>
+            <ng-container *ngFor="let skill of skillSetBest">
+                <input type="radio" [value]="skill.id" formControlName="bestSkill">
+                <label for="">{{skill.name}}</label><br>
+            </ng-container>
+        </div>
+        <div>
+            <p>5. {{questions.file}}</p>
+            <input type="file" formControlName="file">
+        </div>
+        <div>
+            <button type="submit">Save</button>
+        </div>
+    </form>
+</content>
+
+<hr>
+<div>
+
+    Search name here:<input type="text" [formControl]="searchInput" autocomplete="">
+</div>
+<div>
+    <ng-container *ngIf="list|async as mylist">
+        <table>
+            <thead>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Preffered Skill</th>
+                <th>Preffered Language</th>
+                <th>Best Skill</th>
+            </thead>
+            <tbody>
+                <ng-container *ngIf="mylist.length > 0;else noData">
+                    <tr *ngFor="let survey of mylist">
+                        <td>{{survey.id}}</td>
+                        <td>{{survey.name}}</td>
+                        <td>
+                            <span *ngFor="let ps of survey.prefferedSkill">
+                                {{ps| Skill }},
+                            </span>
+                        </td>
+                        <td>{{survey.prefferedLang |Skill }}</td>
+                        <td>{{survey.bestSkill |Skill }}</td>
+                    </tr>
+                </ng-container>
+                <ng-template #noData>
+                    <tr>
+                        <td colspan="5" [style]="{'text-align':'center'}">
+                            <h1>No data found</h1>
+                            <h1>Will just attend dsu</h1>
+                        </td>
+                    </tr>
+                </ng-template>
+            </tbody>
+        </table>
+    </ng-container>
+</div>
